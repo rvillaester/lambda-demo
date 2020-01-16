@@ -1,0 +1,16 @@
+---
+Type: "AWS::S3::Bucket"
+Properties:
+  BucketName: gamer-avatar-1
+  AccessControl: Private
+  CorsConfiguration:
+    CorsRules:
+      -
+        AllowedOrigins:
+          - '*'
+        AllowedHeaders:
+          - '*'
+        AllowedMethods:
+          - GET
+          - PUT
+          - POST
