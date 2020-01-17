@@ -8,21 +8,25 @@ gamer_table = dynamo_db.Table('gamer')
 def handler(event, context):
   queryParam = event['queryStringParameters']
   print('query param', queryParam)
+  search_by = queryParam['searchBy']
   message = 'Success'
   try:
-    username = queryParam.get('username')
-    name = queryParam.get('name')
-    
-    if(not username and not name):
-      result = gamer_table.scan()
+    if search_by == 'id':
+      result = table.query(KeyConditionExpression=Key('id').eq(queryParam['id']))
     else:
-      if(username and not name):
-        expression = Attr('username').contains(username)
-      elif (username and name):
-        expression = (Attr('username').contains(username) & Attr('name').contains(name))
-      elif(name and not username):
-        expression = Attr('name').contains(name)
-      result = gamer_table.scan(FilterExpression=expression)
+      username = queryParam.get('username')
+      name = queryParam.get('name')
+    
+      if(not username and not name):
+        result = gamer_table.scan()
+      else:
+        if(username and not name):
+          expression = Attr('username').contains(username)
+        elif (username and name):
+          expression = (Attr('username').contains(username) & Attr('name').contains(name))
+        elif(name and not username):
+          expression = Attr('name').contains(name)
+        result = gamer_table.scan(FilterExpression=expression)
       
     items = result['Items']
   except BaseException as e:
