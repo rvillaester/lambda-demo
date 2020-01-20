@@ -1,0 +1,20 @@
+service: serverless-demo-resources
+
+frameworkVersion: ">=1.8.0 <2.0.0"
+  
+provider:
+  name: aws
+  region: ${opt:region, 'ap-southeast-1'}
+  stage: ${opt:stage, 'dev'} 
+  stackName: resource-stack-${self:provider.stage}
+
+resources:
+  Resources:
+    GamerTable: ${file(gamer-table.yml)}
+    AvatarS3: ${file(avatar-s3.yml)}
+
+package:
+  exclude:
+  - .serverless/**
+  - resources/**
+  - /*.yml

@@ -1,18 +1,19 @@
 import boto3
 import json
 from boto3.dynamodb.conditions import Key, Attr
+import os
 
 dynamo_db = boto3.resource('dynamodb')
-gamer_table = dynamo_db.Table('gamer')
+gamer_table = dynamo_db.Table(os.getenv('Gamer_Table'))
 
 def handler(event, context):
   queryParam = event['queryStringParameters']
   print('query param', queryParam)
-  search_by = queryParam['searchBy']
+  search_by = queryParam.get('searchBy')
   message = 'Success'
   try:
     if search_by == 'id':
-      result = table.query(KeyConditionExpression=Key('id').eq(queryParam['id']))
+      result = gamer_table.query(KeyConditionExpression=Key('id').eq(queryParam.get('id')))
     else:
       username = queryParam.get('username')
       name = queryParam.get('name')

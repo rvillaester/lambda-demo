@@ -1,4 +1,4 @@
-service: serverless-demo-2
+service: sls-demo-function
 
 frameworkVersion: ">=1.8.0 <2.0.0"
 
@@ -8,8 +8,12 @@ plugins:
   
 provider:
   name: aws
-  region: ap-southeast-1
-  stage: dev
+  region: ${opt:region, 'ap-southeast-1'}
+  stage: ${opt:stage, 'dev'}
+  stackName: function-stack-${self:provider.stage}
+  environment:
+    Bucket_Name: gamer-avatar-${self:provider.stage}
+    Gamer_Table: gamer-${self:provider.stage}
           
 functions:
   addGamer:
@@ -20,7 +24,7 @@ functions:
         Action:
           - dynamodb:PutItem
         Resource:
-        - Fn::Sub: "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/gamer"
+        - Fn::Sub: "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/gamer-${self:provider.stage}"
     events:
     - http:
         path: /add-gamer
@@ -34,7 +38,7 @@ functions:
         Action:
           - dynamodb:DeleteItem
         Resource:
-        - Fn::Sub: "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/gamer"
+        - Fn::Sub: "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/gamer-${self:provider.stage}"
     events:
     - http:
         path: /delete-gamer
@@ -49,7 +53,7 @@ functions:
           - dynamodb:Scan
           - dynamodb:Query
         Resource:
-        - Fn::Sub: "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/gamer"
+        - Fn::Sub: "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/gamer-${self:provider.stage}"
     events:
     - http:
         path: /search-gamer
@@ -57,12 +61,12 @@ functions:
         cors: true
   putAvatarToS3:
     runtime: nodejs12.x
-    handler: node/put-avatar-to-S3.handler
+    handler: node/put-avatar-to-s3.handler
     iamRoleStatements:
       - Effect: "Allow"
         Action:
           - s3:PutObject
-        Resource: "*"
+        Resource: "arn:aws:s3:::gamer-avatar-${self:provider.stage}/*"
     events:
     - http:
         path: /put-avatar-to-S3
@@ -70,12 +74,12 @@ functions:
         cors: true
   getAvatarToS3:
     runtime: nodejs12.x
-    handler: node/get-avatar-from-S3.handler
+    handler: node/get-avatar-from-s3.handler
     iamRoleStatements:
       - Effect: "Allow"
         Action:
           - s3:GetObject
-        Resource: "*"
+        Resource: "arn:aws:s3:::gamer-avatar-${self:provider.stage}/*"
     events:
     - http:
         path: /get-avatar-from-S3
@@ -84,8 +88,6 @@ functions:
 
 resources:
   Resources:
-    GamerTable: ${file(resources/gamer-table.yml)}
-    AvatarS3: ${file(resources/avatar-s3.yml)}
     GatewayResponse:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:

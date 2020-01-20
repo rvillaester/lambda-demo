@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 exports.handler = (event, context, callback) => {
     var params = {
-        "Bucket": "gamer-avatar",
+        "Bucket": process.env.Bucket_Name,
         "Key": event.queryStringParameters.key
     };
     s3.getObject(params, function(err, data){

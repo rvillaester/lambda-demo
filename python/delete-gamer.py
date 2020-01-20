@@ -1,8 +1,9 @@
 import boto3
 import json
+import os
 
 dynamo_db = boto3.resource('dynamodb')
-gamer_table = dynamo_db.Table('gamer')
+gamer_table = dynamo_db.Table(os.getenv('Gamer_Table'))
 
 def handler(event, context):
   payload = json.loads(event['body'])

@@ -6,7 +6,7 @@ exports.handler = (event, context, callback) => {
     var filePath = event.queryStringParameters.key
     var params = {
         "Body": decodedImage,
-        "Bucket": "gamer-avatar",
+        "Bucket": process.env.Bucket_Name,
         "Key": filePath
     };
     s3.upload(params, function(err, data){

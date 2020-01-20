@@ -10,4 +10,4 @@ Properties:
   ProvisionedThroughput:
     ReadCapacityUnits: 1
     WriteCapacityUnits: 1
-  TableName: gamer-2
+  TableName: gamer-${self:provider.stage}

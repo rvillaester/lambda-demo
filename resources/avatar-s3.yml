@@ -1,7 +1,7 @@
 ---
 Type: "AWS::S3::Bucket"
 Properties:
-  BucketName: gamer-avatar-1
+  BucketName: gamer-avatar-${self:provider.stage}
   AccessControl: Private
   CorsConfiguration:
     CorsRules:

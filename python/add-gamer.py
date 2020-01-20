@@ -2,9 +2,10 @@ import boto3
 import json
 import re
 import datetime
+import os
 
 dynamo_db = boto3.resource('dynamodb')
-gamer_table = dynamo_db.Table('gamer')
+gamer_table = dynamo_db.Table(os.getenv('Gamer_Table'))
 
 def add_gamer(id, payload):
   print('creating student')
