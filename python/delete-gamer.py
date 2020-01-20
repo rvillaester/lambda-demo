@@ -6,13 +6,13 @@ dynamo_db = boto3.resource('dynamodb')
 gamer_table = dynamo_db.Table(os.getenv('Gamer_Table'))
 
 def handler(event, context):
-  payload = json.loads(event['body'])
+  payload = event.get('body')
   print('payload', payload)
   message = 'Success'
   try:
     gamer_table.delete_item(
       Key={
-        'id': payload['id']
+        'id': payload.get('id')
       }
     )
   except BaseException as e:

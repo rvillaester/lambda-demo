@@ -12,19 +12,19 @@ def add_gamer(id, payload):
   gamer_table.put_item(
     Item={
       'id': id,
-      'username': payload['username'],
-      'name': payload['name'],
-      'email': payload['email'],
-      'gender': payload['gender']
+      'username': payload.get('username'),
+      'name': payload.get('name'),
+      'email': payload.get('email'),
+      'gender': payload.get('gender')
     }
   )
 
 def handler(event, context):
-  payload = json.loads(event['body'])
+  payload = event.get('body')
   print('payload', payload)
   message = 'Success'
   try:
-    date_today = datetime.datetime.now();
+    date_today = datetime.datetime.now()
     id = re.sub("\D", "", str(date_today))
     add_gamer(id, payload)
   except BaseException as e:

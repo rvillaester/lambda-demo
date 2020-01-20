@@ -7,7 +7,8 @@ dynamo_db = boto3.resource('dynamodb')
 gamer_table = dynamo_db.Table(os.getenv('Gamer_Table'))
 
 def handler(event, context):
-  queryParam = event['queryStringParameters']
+  print('event', event)
+  queryParam = event.get('queryStringParameters')
   print('query param', queryParam)
   search_by = queryParam.get('searchBy')
   message = 'Success'
