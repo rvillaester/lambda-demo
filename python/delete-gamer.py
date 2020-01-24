@@ -6,7 +6,8 @@ dynamo_db = boto3.resource('dynamodb')
 gamer_table = dynamo_db.Table(os.getenv('Gamer_Table'))
 
 def handler(event, context):
-  payload = event.get('body')
+  payload = json.loads(event['body'])
+  #payload = event.get('body')
   print('payload', payload)
   message = 'Success'
   try:

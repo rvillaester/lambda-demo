@@ -1,0 +1,24 @@
+---
+Type: AWS::Cognito::UserPoolClient
+Properties:
+  ClientName: AppUserPoolClient
+  UserPoolId:
+    Ref: CognitoUserPool
+  GenerateSecret: false
+  SupportedIdentityProviders:
+    - COGNITO 
+    - Google
+    - Facebook
+  CallbackURLs: 
+    - http://localhost:4200
+  LogoutURLs:
+    - http://localhost:4200
+  AllowedOAuthFlows:
+    - code
+  AllowedOAuthScopes: 
+    - phone
+    - email
+    - openid
+    - aws.cognito.signin.user.admin
+    - profile
+  AllowedOAuthFlowsUserPoolClient: true

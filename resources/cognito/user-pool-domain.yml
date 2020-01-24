@@ -1,0 +1,6 @@
+---
+Type: AWS::Cognito::UserPoolDomain
+Properties: 
+  Domain: app-rvillaester
+  UserPoolId: 
+    Ref: CognitoUserPool

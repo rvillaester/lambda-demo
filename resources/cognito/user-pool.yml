@@ -1,0 +1,8 @@
+---
+Type: AWS::Cognito::UserPool
+Properties:
+  UserPoolName: AppUserPool
+  UsernameAttributes:
+    - email
+  AutoVerifiedAttributes:
+    - email

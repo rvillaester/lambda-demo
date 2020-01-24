@@ -20,7 +20,8 @@ def add_gamer(id, payload):
   )
 
 def handler(event, context):
-  payload = event.get('body')
+  payload = json.loads(event['body'])
+  #payload = event.get('body')
   print('payload', payload)
   message = 'Success'
   try:
