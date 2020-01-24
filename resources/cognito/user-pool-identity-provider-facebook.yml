@@ -7,8 +7,8 @@ Properties:
     Email: email
     Name: name
   ProviderDetails:
-    client_id: 553615148698403
-    client_secret: 4373ef1b1ae8e700548462db63899b45
+    client_id: 
+    client_secret: 
     authorize_scopes: email public_profile
   ProviderType: Facebook
   UserPoolId: 
