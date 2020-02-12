@@ -1,5 +1,6 @@
 ---
 Type: AWS::Cognito::UserPoolClient
+DependsOn: [CognitoUserPoolIdentityProviderGoogle, CognitoUserPoolIdentityProviderFacebook]
 Properties:
   ClientName: AppUserPoolClient
   UserPoolId:

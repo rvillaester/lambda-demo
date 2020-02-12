@@ -1,0 +1,66 @@
+service: serverless-demo-api
+
+frameworkVersion: ">=1.8.0 <2.0.0"
+  
+provider:
+  name: aws
+  region: ${opt:region, 'ap-southeast-1'}
+  stage: ${opt:stage, 'dev'} 
+  stackName: api-stack-${self:provider.stage}
+
+functions:
+  authenticatedAPI:
+    runtime: python3.8
+    handler: python/authenticated-api.handler
+    package:
+      exclude:
+        - "**/**"
+      include:
+        - ../python/authenticated-api.py
+    events:
+    - http:
+        authorizer:
+            name: pool_auth
+            arn: arn:aws:cognito-idp:ap-southeast-1:021903227276:userpool/ap-southeast-1_j4dyRSpNY
+        path: /authenticatedAPI
+        method: get
+        cors: true
+  publicAPI:
+    runtime: python3.8
+    handler: python/public-api.handler
+    package:
+      exclude:
+        - "**/**"
+      include:
+        - ../python/public-api.py
+    events:
+    - http:
+        path: /publicAPI
+        method: get
+        cors: true
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+    GatewayResponseDefault5XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '501'
+
+package:
+  individually: true

@@ -1,11 +1,12 @@
 ---
 Type: AWS::Cognito::UserPoolIdentityProvider
+DependsOn: CognitoUserPool
 Properties: 
   ProviderName: Facebook
   AttributeMapping:
-    Username: id
+    Username: email
     Email: email
-    Name: name
+    name: name
   ProviderDetails:
     client_id: 
     client_secret: 

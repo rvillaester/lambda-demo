@@ -6,3 +6,8 @@ Properties:
     - email
   AutoVerifiedAttributes:
     - email
+  Schema:
+    - Name: name
+      AttributeDataType: String
+      Mutable: true
+      Required: true

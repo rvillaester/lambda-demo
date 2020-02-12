@@ -1,10 +1,11 @@
 ---
 Type: AWS::Cognito::UserPoolIdentityProvider
+DependsOn: CognitoUserPool
 Properties: 
   ProviderName: Google
   AttributeMapping:
     Email: email
-    Name: name
+    name: name
   ProviderDetails:
     client_id: 
     client_secret: 

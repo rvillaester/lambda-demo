@@ -1,5 +1,6 @@
 ---
 Type: AWS::Cognito::UserPoolDomain
+DependsOn: CognitoUserPool
 Properties: 
   Domain: app-rvillaester
   UserPoolId: 
